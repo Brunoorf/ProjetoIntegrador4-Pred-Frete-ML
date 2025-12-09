@@ -87,19 +87,14 @@ Para executar a demonstração localmente:
     `pip install streamlit pandas joblib scikit-learn`
 2.  Execute o arquivo `app.py` na raiz do projeto:
     `streamlit run app.py`
-    
----g
+
+
 
 ## 🛠️ Estrutura do Repositório
-/predicao-frete-ml
-├── notebooks/
-│   └── MLdoPI.ipynb        <-- O pipeline de ML (Limpo e Refatorado)
-├── assets/
-│   └── *.png               <-- Screenshots do Streamlit
-├── data/
-│   └── comparativo_modelo.csv <-- Amostra do resultado final
-├── models/
-│   └── modelo_entregas.joblib   <-- Modelo treinado (Ignorado pelo Git)
-├── app.py                  <-- Aplicação Streamlit
-├── .gitignore
+/projetointegrador-frete-predição
+├── app.py              <-- Script Streamlit (Code)
+├── notebooks/          <-- Notebooks (Exploration/Code)
+├── assets/             <-- Imagens/Screenshots (Assets)
+├── data/               <-- Dados (Data)
+├── model/             <-- Modelo Treinado (Artifacts)
 └── README.md
