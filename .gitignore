@@ -1,3 +1,6 @@
 modelo_entregas.joblib
-*.csv
+data/olist_*.csv
+data/referencia_geo.csv
 .ipynb_checkpoints
+
+!data/comparativo_modelo.csv
