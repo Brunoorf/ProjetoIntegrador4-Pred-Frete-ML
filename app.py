@@ -5,10 +5,10 @@ import joblib
 import plotly.express as px
 from math import radians, cos, sin, asin, sqrt
 
-# --- CONFIGURAÇÃO DA PÁGINA ---
+# CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(page_title="Sonda Delivery ML", page_icon="🚚", layout="wide")
 
-# --- 1. CARREGAMENTO DOS ARQUIVOS ---
+# 1. CARREGAMENTO DOS ARQUIVOS
 @st.cache_resource
 def load_assets():
     try:
@@ -17,7 +17,7 @@ def load_assets():
         geo_data = pd.read_csv('referencia_geo.csv')
         geo_data['geolocation_zip_code_prefix'] = geo_data['geolocation_zip_code_prefix'].astype(str).str.zfill(5)
         
-        # Tenta carregar o arquivo de comparação para o gráfico (pode não existir na primeira execução)
+        # Tenta carregar o arquivo de comparação para o gráfico
         try:
             df_comp = pd.read_csv('comparativo_modelo.csv')
         except:
@@ -30,7 +30,7 @@ def load_assets():
 
 model, geo_data, df_comp = load_assets()
 
-# --- 2. FUNÇÕES AUXILIARES ---
+# 2. FUNÇÕES AUXILIARES
 def get_lat_lon(cep, geo_df):
     # Formata o CEP para pegar os 5 primeiros dígitos
     prefixo = str(cep).replace("-", "").replace(".", "").strip()[:5]
@@ -47,20 +47,19 @@ def haversine(lat1, lon1, lat2, lon2):
     a = sin(dphi/2)**2 + cos(phi1)*cos(phi2)*sin(dlambda/2)**2
     return 2*R*asin(sqrt(a))
 
-# --- 3. INTERFACE VISUAL ---
+# 3. INTERFACE VISUAL
 st.title("🚚 Sonda Delivery: Otimização Logística com ML")
 st.markdown("---")
 
-# Ordem das Abas: Performance Primeiro, Simulador Depois (como você configurou)
+
 tab1, tab2, tab3 = st.tabs(["📈 Performance do Modelo", "🧮 Simulador de Prazo", "🚀 Impacto & Futuro"])
 
-# ==============================================================================
 # ABA 1: PERFORMANCE (Gráfico de Comparação e Importância)
-# ==============================================================================
+
 with tab1:
     st.header("Análise de Performance e Explicabilidade")
 
-    # --- 1. GRÁFICO DE ERRO (Agora vem PRIMEIRO) ---
+    #1. GRÁFICO DE ERRO
     st.subheader("📉 Distribuição dos Erros (Legado vs ML)")
     st.caption("Comparativo de quantos dias cada sistema erra. O ideal é que o gráfico esteja alto e centralizado no 0.")
     
@@ -92,23 +91,23 @@ with tab1:
 
     st.divider()
 
-    # --- 2. GRÁFICO DE IMPORTÂNCIA (Agora vem DEPOIS) ---
+    # 2. GRÁFICO DE IMPORTÂNCIA
     st.subheader("🧠 Por que o ML tomou essa decisão?")
     st.markdown("O gráfico abaixo mostra quais variáveis têm maior peso no cálculo do prazo.")
 
     if model is not None:
         # Extrair a importância das features do modelo treinado
         importancias = model.feature_importances_
-        # Nomes das colunas usadas no treino (nessa ordem exata)
+        # Nomes das colunas usadas no treino
         features = ['Distância (km)', 'Peso (g)', 'Volume (cm³)', 'Valor do Frete (R$)', 'Preço do Produto (R$)']
         
         # Criar DataFrame para o gráfico
         df_imp = pd.DataFrame({'Fator': features, 'Importância (%)': importancias * 100})
-        df_imp = df_imp.sort_values('Importância (%)', ascending=True) # Ordenar para o gráfico
+        df_imp = df_imp.sort_values('Importância (%)', ascending=True)
         
         # Gráfico de Barras Horizontais
         fig_imp = px.bar(df_imp, x='Importância (%)', y='Fator', orientation='h',
-                         text_auto='.1f', # Mostra o valor na barra
+                         text_auto='.1f',
                          color='Importância (%)', 
                          color_continuous_scale='Blues')
         
@@ -121,9 +120,7 @@ with tab1:
         * **Valor do Frete:** O ML aprende que frete mais caro geralmente indica modal expresso (Sedex/Transportadora Rápida), reduzindo o prazo.
         """)
 
-# ==============================================================================
 # ABA 2: SIMULADOR (Operacional)
-# ==============================================================================
 with tab2:
     st.subheader("Simulação de Entrega em Tempo Real")
     st.markdown("Preencha os dados da rota para estimar o prazo com o ML.")
@@ -132,8 +129,8 @@ with tab2:
     
     with col1:
         st.info("📍 **Rota**")
-        cep_origem = st.text_input("CEP Origem (Vendedor)", "13023") # Ex: Campinas
-        cep_destino = st.text_input("CEP Destino (Cliente)", "42800") # Ex: Bahia
+        cep_origem = st.text_input("CEP Origem (Vendedor)", "13023")
+        cep_destino = st.text_input("CEP Destino (Cliente)", "42800")
         
     with col2:
         st.info("📦 **Pacote**")
@@ -158,7 +155,7 @@ with tab2:
                 # 2. Calcular Distância
                 distancia = haversine(lat_origem, lon_origem, lat_destino, lon_destino)
                 
-                # 3. Preparar dados para o Modelo (Mesma ordem do treinamento!)
+                # 3. Preparar dados para o Modelo
                 # Features: ['distancia_km', 'product_weight_g', 'volume_cm3', 'freight_value', 'price']
                 dados_entrada = pd.DataFrame([[distancia, peso, volume, frete, preco]], 
                                            columns=['distancia_km', 'product_weight_g', 'volume_cm3', 'freight_value', 'price'])
@@ -179,9 +176,7 @@ with tab2:
         else:
             st.error("Modelo não carregado. Verifique os arquivos .joblib e .csv")
     
-# ==============================================================================
-# ABA 3: IMPACTO E FUTURO (NOVA!)
-# ==============================================================================
+# ABA 3: IMPACTO E FUTURO
 with tab3:
     st.header("Visão Estratégica: Próximos Passos")
     st.markdown("O modelo atual é apenas o começo. Abaixo detalhamos o potencial de geração de valor e o roadmap técnico.")
@@ -203,12 +198,10 @@ with tab3:
         </div>
         """, unsafe_allow_html=True)
 
-    # --- COLUNA DE NEGÓCIOS (VERDE ESCURO) ---
+    # COLUNA DE NEGÓCIOS
     with col_business:
         st.subheader("🎯 Expectativas de Impacto Direto")
         st.caption("Benefícios financeiros e operacionais")
-        
-        # Cor de fundo: Verde Floresta (#2E7D32) para contraste com texto branco
         bg_biz = "#2E7D32" 
         
         card("✅", "Fim dos 'Colchões'", 
@@ -223,12 +216,10 @@ with tab3:
         card("🚚", "Competitividade", 
              "Nossa oferta de frete se torna mais atraente frente aos concorrentes, sem aumentar o custo operacional.", bg_biz)
 
-    # --- COLUNA TÉCNICA (AZUL ESCURO) ---
+    # COLUNA TÉCNICA
     with col_tech:
         st.subheader("🛠️ Melhorias Técnicas Planejadas")
         st.caption("Roadmap de evolução da IA")
-        
-        # Cor de fundo: Azul Navy (#1565C0) para contraste com texto branco
         bg_tech = "#1565C0"
         
         card("🌊", "Sazonalidade", 
