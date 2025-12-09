@@ -50,23 +50,35 @@ O arquivo **`data/comparativo_modelo.csv`** contém uma amostra de 5.000 previs�
 
 ## 🚀 Demonstração do Projeto (Streamlit)
 
-O projeto inclui um aplicativo web (`app.py`) construído com Streamlit para demonstrar a predição em tempo real e visualizar os resultados de forma interativa.
+O projeto inclui um aplicativo web (`app.py`) construído com Streamlit para demonstrar a predição em tempo real e visualizar os resultados e a performance do modelo de forma interativa.
 
-#### 1. Interface de Predição
+#### 1. Interface de Predição e Simulação
 
-A aplicação permite a inserção dos parâmetros logísticos (Peso, Volume, Distância e Preço) para gerar instantaneamente a estimativa de prazo do modelo Random Forest.
+A aplicação permite a inserção dos parâmetros logísticos (Peso, Volume, Distância e Preço) para gerar instantaneamente a estimativa de prazo do modelo Random Forest, servindo como um simulador.
 
-**Exemplo de Predição em Tempo Real:**
+**Simulador de Frete em Tempo Real:**
 
-![Interface de entrada de dados para predição](assets/app_predicao.png)
+![Simulador de frete em tempo real, mostrando as variáveis de entrada e a predição do prazo.](assets/simulador_frete.png.jpeg)
 
-#### 2. Análise de Desempenho
+#### 2. Análise de Desempenho e Comparação
 
-A aplicação também exibe o gráfico de comparação que prova o valor do modelo, ilustrando a melhoria de precisão do modelo de IA em relação à estimativa logística anterior.
+A aplicação exibe gráficos essenciais que comprovam a melhoria do modelo de ML em relação aos métodos tradicionais.
 
-**Gráfico Comparativo do Modelo (Amostra de 5000 Registros):**
+**Gráfico Comparativo do Modelo (Real vs. Estimativas):**
 
-![Gráfico comparando o Prazo Real, Estimativa Antiga e a Previsão do Modelo de ML](assets/app_grafico_comparacao.png)
+![Gráfico comparando o Prazo Real, a Estimativa Antiga e a Previsão do Modelo de ML.](assets/grafico_comparacao.png.jpeg)
+
+**Análise da Distribuição de Erros (Resíduos):**
+
+![Distribuição dos erros (diferença entre o prazo real e o prazo predito), essencial para avaliar a confiabilidade do modelo.](assets/distribuicao_erros.png.jpeg)
+
+#### 3. Conclusão e Próximos Passos
+
+O painel conclui com o resultado final do MAE e sugere os próximos passos para a evolução da solução em um ambiente de produção.
+
+**Conclusão e Próximos Passos Sugeridos:**
+
+![Seção de conclusão da aplicação Streamlit, incluindo métricas finais e recomendações.](assets/conclusao_proximos_passos.png.jpeg)
 
 ### Como Rodar a Demonstração
 
@@ -75,8 +87,8 @@ Para executar a demonstração localmente:
     `pip install streamlit pandas joblib scikit-learn`
 2.  Execute o arquivo `app.py` na raiz do projeto:
     `streamlit run app.py`
-
----
+    
+---g
 
 ## 🛠️ Estrutura do Repositório
 /predicao-frete-ml
